@@ -2,6 +2,8 @@
 
 const logoutButton = new LogoutButton();
 const ratesBoard = new RatesBoard();
+const moneyManager = new MoneyManager();
+const favoritesWidget = new FavoritesWidget();
 
 logoutButton.action = () => ApiConnector.logout(callback => {
   if(callback.success = true) {
@@ -27,3 +29,62 @@ function gateMoney () {
 
 gateMoney();
 let updateInterval = setInterval(() => gateMoney(), 60000);
+
+moneyManager.addMoneyCallback = data => ApiConnector.addMoney(data, callback => {
+  if (callback.success) {
+    ProfileWidget.showProfile(callback.data);
+    moneyManager.setMessage(true, 'Балланс пополнен!');
+  } else {
+    moneyManager.setMessage(false, callback.error);
+  }
+});
+
+moneyManager.conversionMoneyCallback = data => ApiConnector.convertMoney(data, callback => {
+  if (callback.success) {
+    ProfileWidget.showProfile(callback.data);
+    moneyManager.setMessage(true, 'Конвертация выполнена успешно!');
+  } else {
+    moneyManager.setMessage(false, callback.error);
+  }
+});
+
+moneyManager.sendMoneyCallback = data => ApiConnector.transferMoney(data, callback => {
+  if (callback.success) {
+    ProfileWidget.showProfile(callback.data);
+    moneyManager.setMessage(true, 'Перевод выполнен успешно!');
+  } else {
+    moneyManager.setMessage(false, callback.error);
+  }
+});
+
+ApiConnector.getFavorites(callback => {
+  if (callback.success = true) {
+    favoritesWidget.clearTable();
+    favoritesWidget.fillTable(callback.date);
+    favoritesWidget.updateUsersList(callback.date);
+  }
+});
+
+favoritesWidget.addUserCallback = data => ApiConnector.addUserToFavorites(data, callback => {
+  if (callback.success = true) {
+    favoritesWidget.clearTable();
+    favoritesWidget.fillTable(callback.date);
+    favoritesWidget.updateUsersList(callback.date);
+    favoritesWidget.setMessage(true, 'Пользователь добавлен!');
+  } else {
+    favoritesWidget.setMessage(false, callback.error);
+  }
+}); 
+
+favoritesWidget.removeUserCallback = data => ApiConnector.removeUserFromFavorites(data, callback => {
+  if (callback.success = true) {
+    favoritesWidget.clearTable();
+    favoritesWidget.fillTable(callback.date);
+    favoritesWidget.updateUsersList(callback.date);
+    favoritesWidget.setMessage(true, 'Пользователь удалён!');
+  } else {
+    favoritesWidget.setMessage(false, callback.error);
+  }
+}); 
+
+
