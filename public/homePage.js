@@ -58,18 +58,18 @@ moneyManager.sendMoneyCallback = data => ApiConnector.transferMoney(data, callba
 });
 
 ApiConnector.getFavorites(callback => {
-  if (callback.success = true) {
+  if (callback.success) {
     favoritesWidget.clearTable();
-    favoritesWidget.fillTable(callback.date);
-    favoritesWidget.updateUsersList(callback.date);
+    favoritesWidget.fillTable(callback.data);
+    favoritesWidget.updateUsersList(callback.data);
   }
 });
 
 favoritesWidget.addUserCallback = data => ApiConnector.addUserToFavorites(data, callback => {
-  if (callback.success = true) {
+  if (callback.success) {
     favoritesWidget.clearTable();
-    favoritesWidget.fillTable(callback.date);
-    favoritesWidget.updateUsersList(callback.date);
+    favoritesWidget.fillTable(callback.data);
+    favoritesWidget.updateUsersList(callback.data);
     favoritesWidget.setMessage(true, 'Пользователь добавлен!');
   } else {
     favoritesWidget.setMessage(false, callback.error);
@@ -77,10 +77,10 @@ favoritesWidget.addUserCallback = data => ApiConnector.addUserToFavorites(data, 
 }); 
 
 favoritesWidget.removeUserCallback = data => ApiConnector.removeUserFromFavorites(data, callback => {
-  if (callback.success = true) {
+  if (callback.success) {
     favoritesWidget.clearTable();
-    favoritesWidget.fillTable(callback.date);
-    favoritesWidget.updateUsersList(callback.date);
+    favoritesWidget.fillTable(callback.data);
+    favoritesWidget.updateUsersList(callback.data);
     favoritesWidget.setMessage(true, 'Пользователь удалён!');
   } else {
     favoritesWidget.setMessage(false, callback.error);
